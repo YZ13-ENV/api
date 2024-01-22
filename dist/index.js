@@ -329,6 +329,637 @@
       }
     }
   };
+  const bum = {
+    author: {
+      saved: async (uid) => {
+        try {
+          if (!uid)
+            throw new Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/user/saved?id=${uid}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return [];
+        } catch (e) {
+          return [];
+        }
+      },
+      mostPopularShot: async (uid) => {
+        try {
+          if (!uid)
+            throw new Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/user/popular?id=${uid}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          return null;
+        }
+      },
+      last: async (uid) => {
+        try {
+          if (!uid)
+            throw new Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/user/last?id=${uid}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return [];
+        } catch (e) {
+          return [];
+        }
+      },
+      follow: async (from, to) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/follow?from=${from}&to=${to}`, {
+            method: "GET",
+            headers
+          });
+          if (res.ok) {
+            return await res.json();
+          } else
+            return [];
+        } catch (e) {
+          console.log(e);
+          return [];
+        }
+      },
+      addAbout: async (id, about) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/about?id=${id}&about=${about}`, {
+            method: "POST",
+            headers
+          });
+          if (res.ok) {
+            return await res.text();
+          } else
+            return "";
+        } catch (e) {
+          console.log(e);
+          return "";
+        }
+      },
+      getAbout: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/about?id=${id}`, {
+            method: "GET",
+            headers
+          });
+          if (res.ok) {
+            return await res.text();
+          } else
+            return "";
+        } catch (e) {
+          console.log(e);
+          return "";
+        }
+      },
+      addSignature: async (id, signature) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/signature?id=${id}&signature=${signature}`, {
+            method: "POST",
+            headers
+          });
+          if (res.ok) {
+            return await res.text();
+          } else
+            return "";
+        } catch (e) {
+          console.log(e);
+          return "";
+        }
+      },
+      getSignature: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/signature?id=${id}`, {
+            method: "GET",
+            headers
+          });
+          if (res.ok) {
+            return await res.text();
+          } else
+            return "";
+        } catch (e) {
+          console.log(e);
+          return "";
+        }
+      },
+      likes: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/likes?id=${id}`, {
+            method: "GET",
+            headers
+          });
+          if (res.ok) {
+            return await res.json();
+          } else
+            return [];
+        } catch (e) {
+          console.log(e);
+          return [];
+        }
+      },
+      followers: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/followers?id=${id}`, {
+            method: "GET",
+            headers
+          });
+          if (res.ok) {
+            return await res.json();
+          } else
+            return [];
+        } catch (e) {
+          console.log(e);
+          return [];
+        }
+      },
+      followings: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/shots/user/following?id=${id}`, {
+            method: "GET",
+            headers
+          });
+          if (res.ok) {
+            return await res.json();
+          } else
+            return [];
+        } catch (e) {
+          console.log(e);
+          return [];
+        }
+      }
+    },
+    attachments: {
+      generate: async (path, file2, asThumbnail) => {
+        try {
+          const headers = new Headers();
+          const form = new FormData();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/attachments?id=${path}${asThumbnail ? `&asThumbnail=${asThumbnail}` : ""}`;
+          form.append("file", file2);
+          const res = await fetch(url, { method: "POST", headers, body: form });
+          if (res.ok) {
+            const attachment = await res.json();
+            return attachment;
+          } else
+            return null;
+        } catch (e) {
+          console.warn(e);
+          return null;
+        }
+      }
+    },
+    drafts: {
+      all: async (order, category) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = order && category ? `${api_host}/shots/all/${order}/${category}?onlyDrafts=true` : order ? `${api_host}/shots/all/${order}?onlyDrafts=true` : `${api_host}/shots/all/popular?onlyDrafts=true`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return { count: 0, data: [], next: "" };
+        } catch (e) {
+          console.warn(e);
+          return { count: 0, data: [], next: "" };
+        }
+      },
+      byUser: async (order, category, uid) => {
+        try {
+          if (!uid)
+            throw Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = order && category ? `${api_host}/shots/user/${uid}/${order}/${category}?onlyDrafts=true` : order ? `${api_host}/shots/user/${uid}/${order}?onlyDrafts=true` : `${api_host}/shots/user/${uid}?onlyDrafts=true`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return { count: 0, data: [], next: "" };
+        } catch (e) {
+          console.warn(e);
+          return { count: 0, data: [], next: "" };
+        }
+      }
+    },
+    shots: {
+      search: async (query, order, category, uid) => {
+        try {
+          if (!uid)
+            throw Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = order && category ? `${api_host}/shots/search/${query}/${order}/${category}?uid=${uid}` : order ? `${api_host}/shots/search/${query}/${order}?uid=${uid}` : `${api_host}/shots/search/${query}/popular?uid=${uid}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return { count: 0, data: [], next: "" };
+        } catch (e) {
+          console.warn(e);
+          return { count: 0, data: [], next: "" };
+        }
+      },
+      byUser: async (uid, order, category) => {
+        try {
+          if (!uid)
+            throw Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = order && category ? `${api_host}/shots/user/${uid}/${order}/${category}` : order ? `${api_host}/shots/user/${uid}/${order}` : `${api_host}/shots/user/${uid}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return { count: 0, data: [], next: "" };
+        } catch (e) {
+          console.warn(e);
+          return { count: 0, data: [], next: "" };
+        }
+      },
+      tags: async () => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/tags`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok) {
+            const tags = await res.json();
+            return tags;
+          } else
+            return { count: 0, data: [], next: "" };
+        } catch (e) {
+          console.warn(e);
+          return { count: 0, data: [], next: "" };
+        }
+      },
+      all: async (order, category, uid) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = order && category ? `${api_host}/shots/all/${order}/${category}${uid ? `?uid=${uid}` : ""}` : order ? `${api_host}/shots/all/${order}${uid ? `?uid=${uid}` : ""}` : `${api_host}/shots/all/popular${uid ? `?uid=${uid}` : ""}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return { count: 0, data: [], next: "" };
+        } catch (e) {
+          console.warn(e);
+          return { count: 0, data: [], next: "" };
+        }
+      },
+      byTag: async (tag, order) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const fetchUrl = `${api_host}/tags/${tag}/${order}`;
+          const res = await fetch(fetchUrl, { method: "GET", headers });
+          if (res.ok) {
+            const shots = await res.json();
+            return shots;
+          } else
+            return [];
+        } catch (e) {
+          console.log(e);
+          return [];
+        }
+      },
+      byType: async (userId, type = "shots", order) => {
+        const requestType = type === "shots" ? "onlyShots" : "onlyDrafts";
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const shotsRes = await fetch(`${api_host}/shots/${requestType}/${userId}${order ? `?order=${order}` : ""}`, {
+            headers
+          });
+          const shots = await shotsRes.json();
+          return shots;
+        } catch (e) {
+          console.log(e);
+          return [];
+        }
+      }
+    },
+    shot: {
+      like: async (id, uid) => {
+        try {
+          if (!uid)
+            throw new Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/shot/${id}/like?uid=${uid}`;
+          const res = await fetch(url, { method: "POST", headers });
+          if (res.ok)
+            return await res.json();
+          return [];
+        } catch (e) {
+          return [];
+        }
+      },
+      view: async (id, uid) => {
+        try {
+          if (!uid)
+            throw new Error("uid is not provided");
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/shot/${id}/view?uid=${uid}`;
+          const res = await fetch(url, { method: "POST", headers });
+          if (res.ok)
+            return await res.json();
+          return [];
+        } catch (e) {
+          return [];
+        }
+      },
+      addComment: async (id, comment) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_host}/shots/shot/${id}/comment`;
+          const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(comment) });
+          if (res.ok)
+            return await res.json();
+          return [];
+        } catch (e) {
+          return [];
+        }
+      },
+      deleteComment: async (id, commentId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/shot/${id}/comment?commentId=${commentId}`;
+          const res = await fetch(url, { method: "DELETE", headers });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          return false;
+        }
+      },
+      get: async (shotId, userId) => {
+        try {
+          if (userId) {
+            const shotRes = await fetch(`${api_host}/shots/shot/${shotId}/${userId}`, { method: "GET", cache: "no-store" });
+            const shot = await shotRes.json();
+            return shot;
+          } else {
+            const shotRes = await fetch(`${api_host}/shots/shot/${shotId}`, { method: "GET", cache: "no-store" });
+            const shot = await shotRes.json();
+            return shot;
+          }
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      create: async (id, draft) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_host}/shots/shot/${id}`;
+          const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      },
+      update: async (id, draft) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_host}/shots/shot/${id}`;
+          const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(draft) });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      },
+      delete: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/shot/${id}`;
+          const res = await fetch(url, { method: "DELETE", headers });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      },
+      getPopularOne: async (userId) => {
+        try {
+          const shots = await bum.shots.byType(userId, "shots", "popular");
+          if (shots.length !== 0) {
+            return shots[0];
+          } else
+            return null;
+        } catch (e) {
+          return null;
+        }
+      }
+    },
+    draft: {
+      get: async (shotId) => {
+        try {
+          const res = await fetch(`${api_host}/shots/draft/${shotId}`, { method: "GET", cache: "no-store" });
+          const draft = await res.json();
+          return draft;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      create: async (id, draft) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_host}/shots/draft/${id}`;
+          const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      },
+      update: async (id, draft) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_host}/shots/draft/${id}`;
+          const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(draft) });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      delete: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/shots/draft/${id}`;
+          const res = await fetch(url, { method: "DELETE", headers });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      }
+    }
+  };
+  const notes = (() => {
+    return {
+      getNoteById: async (noteId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/notes/${noteId}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          console.warn(e);
+          return null;
+        }
+      },
+      getAllForUser: async (userId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/notes/uid/${userId}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return [];
+        } catch (e) {
+          console.warn(e);
+          return [];
+        }
+      },
+      deleteOne: async (noteId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/notes/${noteId}`;
+          const res = await fetch(url, { method: "DELETE", headers });
+          if (res.ok)
+            return Boolean(await res.text());
+          return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      updateOne: async (noteId, note) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("Content-Type", "application/json");
+          headers.append("authorization", authHeader || "");
+          const body = JSON.stringify(note, null, 2);
+          const url = `${api_host}/notes/${noteId}`;
+          const res = await fetch(url, { method: "PATCH", body, headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      addOne: async (noteId, note) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("Content-Type", "application/json");
+          headers.append("authorization", authHeader || "");
+          const body = JSON.stringify(note, null, 2);
+          const url = `${api_host}/notes/${noteId}`;
+          const res = await fetch(url, { method: "POST", body, headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      }
+    };
+  })();
   const notifications = {
     push: async (message) => {
       try {
@@ -354,8 +985,10 @@
   exports2.auth = auth;
   exports2.authorizationHeader = authorizationHeader;
   exports2.blog = blog;
+  exports2.bum = bum;
   exports2.cdn = cdn;
   exports2.file = file;
+  exports2.notes = notes;
   exports2.notifications = notifications;
   exports2.user = user;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });

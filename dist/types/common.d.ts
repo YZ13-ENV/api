@@ -17,3 +17,6 @@ export type GridRatioByCategory = {
 };
 export type PickedCategory<T extends keyof Categories> = Categories[T];
 export type AllPostsRatio = `${number}-${number}-${number}-${number}-${number}`;
+export type DocData<T> = {
+    doc_id: string;
+} & T;
