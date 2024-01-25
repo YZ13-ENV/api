@@ -960,20 +960,79 @@
       }
     };
   })();
+  const generateNotification = (message, receiver, link) => {
+    const notification = {
+      message,
+      receiver,
+      createdAt: luxon.DateTime.now().toSeconds(),
+      isViewed: false
+    };
+    if (link)
+      notification.link = link;
+    return notification;
+  };
   const notifications = {
-    push: async (message) => {
+    push: async (message, receiver, link) => {
+      const notification = generateNotification(message, receiver, link);
       try {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const key = process.env.NEXT_PUBLIC_PUSH_KEY;
-        if (!key)
-          throw new Error("No key");
-        const res = await fetch(`${api_host}/notifications/pushMe?key=${key}&message=${message}`, { method: "POST", headers });
-        return res.ok;
+        headers.append("Content-Type", "application/json");
+        const res = await fetch(
+          `${api_host}/notifications/notification/${receiver}`,
+          { method: "POST", headers, body: JSON.stringify(notification) }
+        );
+        if (res.ok)
+          return await res.json();
+        return null;
       } catch (e) {
-        console.log(e);
+        return null;
+      }
+    },
+    patch: async (id, notId, notification) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const res = await fetch(
+          `${api_host}/notifications/notification/${id}/${notId}`,
+          { method: "PATCH", headers, body: JSON.stringify(notification) }
+        );
+        if (res.ok)
+          return await res.json();
+        return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    delete: async (id, notId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/notifications/notification/${id}/${notId}`;
+        const res = await fetch(url, { method: "DELETE", headers });
+        if (res.ok)
+          return Boolean(await res.text());
         return false;
+      } catch (e) {
+        return false;
+      }
+    },
+    all: async (id) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/notifications/all/${id}`;
+        const res = await fetch(url, { method: "GET", cache: "no-store", headers });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
       }
     }
   };
