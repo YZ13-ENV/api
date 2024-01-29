@@ -103,9 +103,11 @@ export type DraftShotData = {
     blocks: Blocks[]
     updatedAt: number
     thumbnail: Thumbnail
+    teamId?: string
 }
 // Опубликованный черновик как работа ( draft -> shot )
 export type ShotData = {
+    teamId?: string
     isDraft: boolean
     authorId: string
     title: string

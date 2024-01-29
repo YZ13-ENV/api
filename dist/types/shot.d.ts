@@ -87,8 +87,10 @@ export type DraftShotData = {
     blocks: Blocks[];
     updatedAt: number;
     thumbnail: Thumbnail;
+    teamId?: string;
 };
 export type ShotData = {
+    teamId?: string;
     isDraft: boolean;
     authorId: string;
     title: string;
