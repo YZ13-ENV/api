@@ -1130,6 +1130,134 @@ const team = {
         return { count: 0, data: [], next: "" };
       }
     }
+  },
+  draft: {
+    get: async (id, draftId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/draft/${draftId}`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok) {
+          return await res.json();
+        } else
+          return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    create: async (id, draftId, draft) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const url = `${api_host}/team/${id}/draft/${draftId}`;
+        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+        if (res.ok) {
+          return Boolean(res.text());
+        } else
+          return false;
+      } catch (e) {
+        return false;
+      }
+    },
+    update: async (id, draftId, draft) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const url = `${api_host}/team/${id}/draft/${draftId}`;
+        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(draft) });
+        if (res.ok) {
+          return await res.json();
+        } else
+          return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    delete: async (id, draftId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/draft/${draftId}`;
+        const res = await fetch(url, { method: "DELETE", headers });
+        if (res.ok) {
+          return Boolean(res.text());
+        } else
+          return false;
+      } catch (e) {
+        return false;
+      }
+    }
+  },
+  shot: {
+    get: async (id, shotId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/shot/${shotId}`;
+        const res = await fetch(url, { method: "", headers });
+        if (res.ok) {
+          return await res.json();
+        } else
+          return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    create: async (id, shotId, draft) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const url = `${api_host}/team/${id}/shot/${shotId}`;
+        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+        if (res.ok) {
+          return Boolean(await res.text());
+        } else
+          return false;
+      } catch (e) {
+        return false;
+      }
+    },
+    update: async (id, shotId, shot) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const url = `${api_host}/team/${id}/shot/${shotId}`;
+        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(shot) });
+        if (res.ok) {
+          return Boolean(await res.text());
+        } else
+          return false;
+      } catch (e) {
+        return false;
+      }
+    },
+    delete: async (id, shotId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/shot/${shotId}`;
+        const res = await fetch(url, { method: "DELETE", headers });
+        if (res.ok) {
+          return Boolean(await res.text());
+        } else
+          return false;
+      } catch (e) {
+        return false;
+      }
+    }
   }
 };
 const cdn = (link) => {
