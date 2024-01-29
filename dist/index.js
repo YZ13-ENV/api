@@ -1036,6 +1036,70 @@
       }
     }
   };
+  const team = {
+    get: async (id) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok) {
+          return await res.json();
+        } else
+          return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    create: async (id) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const url = `${api_host}/team/${id}`;
+        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(team) });
+        if (res.ok) {
+          return await res.json();
+        } else
+          return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    update: async (id) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const url = `${api_host}/team/${id}`;
+        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(team) });
+        if (res.ok) {
+          return await res.json();
+        } else
+          return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    delete: async (id) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}`;
+        const res = await fetch(url, { method: "DELETE", headers });
+        if (res.ok) {
+          return Boolean(await res.text());
+        } else
+          return false;
+      } catch (e) {
+        return false;
+      }
+    }
+  };
   const cdn = (link) => {
     const isStartWithSlash = link.startsWith("/");
     const fetchUrl = isStartWithSlash ? `https://cdn.darkmaterial.space${link}` : `https://cdn.darkmaterial.space/${link}`;
@@ -1049,6 +1113,7 @@
   exports2.file = file;
   exports2.notes = notes;
   exports2.notifications = notifications;
+  exports2.team = team;
   exports2.user = user;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });
 });

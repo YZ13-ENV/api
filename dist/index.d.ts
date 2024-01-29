@@ -5,6 +5,7 @@ export { user } from './api/user';
 export { bum } from './api/bum';
 export { notes } from './api/notes';
 export { notifications } from './api/notifications';
+export { team } from './api/team';
 export { cdn } from './helpers/cdn';
 export { authorizationHeader } from './helpers/headers';
 export * from './types';
