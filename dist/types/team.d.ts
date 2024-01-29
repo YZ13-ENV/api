@@ -1,12 +1,13 @@
 import { DocData } from "./common";
 export type Team = {
     name: string;
-    bio: string;
+    signature: string;
     photoURL?: string;
     founder: string;
     members: string[];
     createdAt: number;
     updatedAt?: number;
+    follows?: string[];
     links?: {
         web?: string;
     };

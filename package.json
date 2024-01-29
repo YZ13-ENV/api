@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "0.0.3",
+  "version": "0.0.5-alpha",
   "description": "api for dm family",
   "private": true,
   "main": "./dist/index.js",
