@@ -1,6 +1,6 @@
 import { api_host } from "@/const/host"
 import { DocTeam } from "@/types/team"
-import { authorizationHeader } from ".."
+import { ChunkResponse, DocShotData, authorizationHeader } from ".."
 
 export const team = {
   get: async(id: string) => {
@@ -60,5 +60,46 @@ export const team = {
     } catch(e) {
       return false
     }
+  },
+  shots: {
+      all: async(id: string, order?: string, category?: string): Promise<ChunkResponse<DocShotData[]>> => {
+          try {
+              const headers = new Headers()
+              const authHeader = authorizationHeader()
+              headers.append('authorization', authHeader || '')
+              const url = order && category
+              ? `${api_host}/team/${id}/shots/${order}/${category}`
+              : order
+              ? `${api_host}/team/${id}/shots/${order}`
+              : `${api_host}/team/${id}/shots`
+              const res = await fetch(url, { method: 'GET', headers: headers })
+              if (res.ok) return (await res.json() as ChunkResponse<DocShotData[]>)
+              return { count: 0, data: [], next: '' }
+          } catch(e) {
+              console.warn(e)
+              return { count: 0, data: [], next: '' }
+          }
+      },
+  },
+  drafts: {
+      all: async(id: string, order?: string, category?: string): Promise<ChunkResponse<DocShotData[]>> => {
+          try {
+              const headers = new Headers()
+              const authHeader = authorizationHeader()
+              headers.append('authorization', authHeader || '')
+              const url = order && category
+              ? `${api_host}/team/${id}/shots/${order}/${category}?onlyDrafts=true`
+              : order
+              ? `${api_host}/team/${id}/shots/${order}?onlyDrafts=true`
+              : `${api_host}/team/${id}/shots?onlyDrafts=true`
+              const res = await fetch(url, { method: 'GET', headers: headers })
+              if (res.ok) return (await res.json() as ChunkResponse<DocShotData[]>)
+              return { count: 0, data: [], next: '' }
+          } catch(e) {
+              console.warn(e)
+              return { count: 0, data: [], next: '' }
+          }
+      },
   }
+
 }

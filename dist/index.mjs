@@ -1096,6 +1096,40 @@ const team = {
     } catch (e) {
       return false;
     }
+  },
+  shots: {
+    all: async (id, order, category) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = order && category ? `${api_host}/team/${id}/shots/${order}/${category}` : order ? `${api_host}/team/${id}/shots/${order}` : `${api_host}/team/${id}/shots`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok)
+          return await res.json();
+        return { count: 0, data: [], next: "" };
+      } catch (e) {
+        console.warn(e);
+        return { count: 0, data: [], next: "" };
+      }
+    }
+  },
+  drafts: {
+    all: async (id, order, category) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = order && category ? `${api_host}/team/${id}/shots/${order}/${category}?onlyDrafts=true` : order ? `${api_host}/team/${id}/shots/${order}?onlyDrafts=true` : `${api_host}/team/${id}/shots?onlyDrafts=true`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok)
+          return await res.json();
+        return { count: 0, data: [], next: "" };
+      } catch (e) {
+        console.warn(e);
+        return { count: 0, data: [], next: "" };
+      }
+    }
   }
 };
 const cdn = (link) => {

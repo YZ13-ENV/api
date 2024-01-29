@@ -8,6 +8,7 @@ export type ShortUserData = {
     metadata: UserMetadata;
     position?: string;
     nickname?: string;
+    teamId?: string;
     [key: string]: any;
 };
 export type NicknameReference = {
