@@ -1196,6 +1196,67 @@ const team = {
     }
   },
   shot: {
+    like: async (id, shotId, uid) => {
+      try {
+        if (!uid)
+          throw new Error("uid is not provided");
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/shot/${shotId}/like?uid=${uid}`;
+        const res = await fetch(url, { method: "POST", headers });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
+      }
+    },
+    view: async (id, shotId, uid) => {
+      try {
+        if (!uid)
+          throw new Error("uid is not provided");
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/shot/${shotId}/view?uid=${uid}`;
+        const res = await fetch(url, { method: "POST", headers });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
+      }
+    },
+    addComment: async (id, shotId, comment) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        headers.append("Content-Type", "application/json");
+        const url = `${api_host}/team/${id}/shot/${shotId}/comment`;
+        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(comment) });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
+      }
+    },
+    deleteComment: async (id, shotId, commentId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/shot/${shotId}/comment?commentId=${commentId}`;
+        const res = await fetch(url, { method: "DELETE", headers });
+        if (res.ok)
+          return Boolean(await res.text());
+        return false;
+      } catch (e) {
+        return false;
+      }
+    },
     get: async (id, shotId) => {
       try {
         const headers = new Headers();

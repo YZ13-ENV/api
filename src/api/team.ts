@@ -1,6 +1,6 @@
 import { api_host } from "@/const/host"
 import { DocTeam } from "@/types/team"
-import { ChunkResponse, DocDraftShotData, DocShotData, DraftForUpload, DraftShotData, ShotData, authorizationHeader } from ".."
+import { ChunkResponse, CommentBlock, DocDraftShotData, DocShotData, DraftForUpload, DraftShotData, ShotData, authorizationHeader } from ".."
 
 export const team = {
   get: async(id: string) => {
@@ -162,6 +162,61 @@ export const team = {
     }
   },
   shot: {
+    like: async(id: string, shotId: string, uid: string): Promise<DocShotData['likes']> => {
+        try {
+            if (!uid) throw new Error('uid is not provided')
+            const headers = new Headers()
+            const authHeader = authorizationHeader()
+            headers.append('authorization', authHeader || '')
+            const url = `${api_host}/team/${id}/shot/${shotId}/like?uid=${uid}`
+            const res = await fetch(url, { method: 'POST', headers: headers })
+            if (res.ok) return await res.json() as DocShotData['likes']
+            return []
+        } catch(e) {
+            return []
+        }
+    },
+    view: async(id: string, shotId: string, uid: string): Promise<DocShotData['views']> => {
+      try {
+          if (!uid) throw new Error('uid is not provided')
+          const headers = new Headers()
+          const authHeader = authorizationHeader()
+          headers.append('authorization', authHeader || '')
+          const url = `${api_host}/team/${id}/shot/${shotId}/view?uid=${uid}`
+          const res = await fetch(url, { method: 'POST', headers: headers })
+          if (res.ok) return await res.json() as DocShotData['views']
+          return []
+      } catch(e) {
+          return []
+      }
+    },
+    addComment: async(id: string, shotId: string, comment: CommentBlock) => {
+        try {
+            const headers = new Headers()
+            const authHeader = authorizationHeader()
+            headers.append('authorization', authHeader || '')
+            headers.append('Content-Type', 'application/json')
+            const url = `${api_host}/team/${id}/shot/${shotId}/comment`
+            const res = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(comment) })
+            if (res.ok) return await res.json() as CommentBlock[]
+            return []
+        } catch(e) {
+            return []
+        }
+    },
+    deleteComment: async(id: string, shotId: string, commentId: string) => {
+        try {
+            const headers = new Headers()
+            const authHeader = authorizationHeader()
+            headers.append('authorization', authHeader || '')
+            const url = `${api_host}/team/${id}/shot/${shotId}/comment?commentId=${commentId}`
+            const res = await fetch(url, { method: 'DELETE', headers: headers })
+            if (res.ok) return Boolean(await res.text())
+            return false
+        } catch(e) {
+            return false
+        }
+    },
     get: async(id: string, shotId: string): Promise<DocShotData | null> => {
       try {
         const headers = new Headers()
