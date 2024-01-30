@@ -1097,6 +1097,42 @@ const team = {
       return false;
     }
   },
+  likes: async (id) => {
+    try {
+      const headers = new Headers();
+      const authHeader = authorizationHeader();
+      headers.append("authorization", authHeader || "");
+      const res = await fetch(`${api_host}/team/${id}/likes?id=${id}`, {
+        method: "GET",
+        headers
+      });
+      if (res.ok) {
+        return await res.json();
+      } else
+        return [];
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  },
+  followings: async (id) => {
+    try {
+      const headers = new Headers();
+      const authHeader = authorizationHeader();
+      headers.append("authorization", authHeader || "");
+      const res = await fetch(`${api_host}/team/${id}/following?id=${id}`, {
+        method: "GET",
+        headers
+      });
+      if (res.ok) {
+        return await res.json();
+      } else
+        return [];
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  },
   shots: {
     all: async (id, order, category) => {
       try {

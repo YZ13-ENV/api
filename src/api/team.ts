@@ -61,6 +61,40 @@ export const team = {
       return false
     }
   },
+  likes: async(id: string): Promise<Array<ShotData['likes']>> => {
+    try {
+        const headers = new Headers()
+        const authHeader = authorizationHeader()
+        headers.append('authorization', authHeader || '')
+        const res = await fetch(`${api_host}/team/${id}/likes?id=${id}`, {
+            method: 'GET',
+            headers: headers
+        })
+        if (res.ok) {
+            return await res.json() as Array<ShotData['likes']>
+        } else return []
+    } catch(e) {
+        console.log(e)
+        return []
+    }
+  },
+  followings: async(id: string): Promise<string[]> => {
+      try {
+          const headers = new Headers()
+          const authHeader = authorizationHeader()
+          headers.append('authorization', authHeader || '')
+          const res = await fetch(`${api_host}/team/${id}/following?id=${id}`, {
+              method: 'GET',
+              headers: headers
+          })
+          if (res.ok) {
+              return await res.json() as string[]
+          } else return []
+      } catch(e) {
+          console.log(e)
+          return []
+      }
+  },
   shots: {
       all: async(id: string, order?: string, category?: string): Promise<ChunkResponse<DocShotData[]>> => {
           try {
