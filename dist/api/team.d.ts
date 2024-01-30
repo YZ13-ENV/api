@@ -7,6 +7,7 @@ export declare const team: {
     delete: (id: string) => Promise<boolean>;
     likes: (id: string) => Promise<Array<ShotData['likes']>>;
     followings: (id: string) => Promise<string[]>;
+    mostPopularShot: (id: string) => Promise<DocShotData | null>;
     shots: {
         all: (id: string, order?: string, category?: string) => Promise<ChunkResponse<DocShotData[]>>;
     };

@@ -1104,7 +1104,7 @@
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const res = await fetch(`${api_host}/team/${id}/likes?id=${id}`, {
+        const res = await fetch(`${api_host}/team/${id}/likes`, {
           method: "GET",
           headers
         });
@@ -1122,7 +1122,7 @@
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const res = await fetch(`${api_host}/team/${id}/following?id=${id}`, {
+        const res = await fetch(`${api_host}/team/${id}/following`, {
           method: "GET",
           headers
         });
@@ -1133,6 +1133,22 @@
       } catch (e) {
         console.log(e);
         return [];
+      }
+    },
+    mostPopularShot: async (id) => {
+      try {
+        if (!id)
+          throw new Error("uid is not provided");
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/popular`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok)
+          return await res.json();
+        return null;
+      } catch (e) {
+        return null;
       }
     },
     shots: {
