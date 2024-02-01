@@ -1,5 +1,5 @@
 import { api_host } from "@/const/host"
-import { DocTeam } from "@/types/team"
+import { DocTeam, Team, TeamScratch } from "@/types/team"
 import { ChunkResponse, CommentBlock, DocDraftShotData, DocShotData, DraftForUpload, DraftShotData, ShotData, authorizationHeader } from ".."
 
 export const team = {
@@ -17,7 +17,7 @@ export const team = {
       return null
     }
   },
-  create: async(id: string) => {
+  create: async(id: string, team: TeamScratch) => {
     try {
       const headers = new Headers()
       const authHeader = authorizationHeader()
@@ -32,7 +32,7 @@ export const team = {
       return null
     }
   },
-  update: async(id: string) => {
+  update: async(id: string, team: Partial<Team>) => {
     try {
       const headers = new Headers()
       const authHeader = authorizationHeader()

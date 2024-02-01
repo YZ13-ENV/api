@@ -1052,14 +1052,14 @@
         return null;
       }
     },
-    create: async (id) => {
+    create: async (id, team2) => {
       try {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
         const url = `${api_host}/team/${id}`;
-        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(team) });
+        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(team2) });
         if (res.ok) {
           return await res.json();
         } else
@@ -1068,14 +1068,14 @@
         return null;
       }
     },
-    update: async (id) => {
+    update: async (id, team2) => {
       try {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
         const url = `${api_host}/team/${id}`;
-        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(team) });
+        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(team2) });
         if (res.ok) {
           return await res.json();
         } else

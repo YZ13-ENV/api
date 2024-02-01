@@ -1,9 +1,9 @@
-import { DocTeam } from '../types/team';
+import { DocTeam, Team, TeamScratch } from '../types/team';
 import { ChunkResponse, CommentBlock, DocDraftShotData, DocShotData, DraftForUpload, DraftShotData, ShotData } from "..";
 export declare const team: {
     get: (id: string) => Promise<DocTeam | null>;
-    create: (id: string) => Promise<DocTeam | null>;
-    update: (id: string) => Promise<DocTeam | null>;
+    create: (id: string, team: TeamScratch) => Promise<DocTeam | null>;
+    update: (id: string, team: Partial<Team>) => Promise<DocTeam | null>;
     delete: (id: string) => Promise<boolean>;
     likes: (id: string) => Promise<Array<ShotData['likes']>>;
     followings: (id: string) => Promise<string[]>;
