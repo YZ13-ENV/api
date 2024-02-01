@@ -23,7 +23,7 @@ export type TeamScratch = {
 export type TeamInvite = {
     uid: string;
     teamId: string;
-    createAt: string;
+    createAt: number;
     expiredAt?: number;
 };
 export type DocTeamInvite = DocData<TeamInvite>;

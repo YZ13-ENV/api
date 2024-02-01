@@ -26,7 +26,7 @@ export type TeamScratch = {
 export type TeamInvite = {
   uid: string // Это даст доступ конкретному пользователю на страницу приглашения
   teamId: string // Это поможет создать ссылку на документ
-  createAt: string
+  createAt: number
   expiredAt?: number
 }
 
