@@ -3,10 +3,11 @@ import { DocData } from "./common"
 export type Team = {
   name: string
   signature: string
-  photoURL?: string
   founder: string
   members: string[] // userId[]
   createdAt: number
+  about?: string
+  photoURL?: string
   updatedAt?: number
   follows?: string[]
   links?: {
