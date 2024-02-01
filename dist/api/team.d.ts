@@ -1,4 +1,4 @@
-import { DocTeam, Team, TeamScratch } from '../types/team';
+import { DocTeam, DocTeamInvite, Team, TeamScratch } from '../types/team';
 import { ChunkResponse, CommentBlock, DocDraftShotData, DocShotData, DraftForUpload, DraftShotData, ShotData } from "..";
 export declare const team: {
     get: (id: string) => Promise<DocTeam | null>;
@@ -8,6 +8,12 @@ export declare const team: {
     likes: (id: string) => Promise<Array<ShotData['likes']>>;
     followings: (id: string) => Promise<string[]>;
     mostPopularShot: (id: string) => Promise<DocShotData | null>;
+    invite: {
+        all: (id: string) => Promise<DocTeamInvite[]>;
+        get: (id: string, inviteId: string) => Promise<DocTeamInvite | null>;
+        invite: (id: string, uid: string) => Promise<DocTeamInvite | null>;
+        delete: (id: string, inviteId: string) => Promise<boolean>;
+    };
     shots: {
         last: (id: string, exclude?: string) => Promise<DocShotData[]>;
         all: (id: string, order?: string, category?: string) => Promise<ChunkResponse<DocShotData[]>>;

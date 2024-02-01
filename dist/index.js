@@ -1151,6 +1151,64 @@
         return null;
       }
     },
+    invite: {
+      all: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/team/${id}/invites`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return [];
+        } catch (e) {
+          return [];
+        }
+      },
+      get: async (id, inviteId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/team/${id}/invite/${inviteId}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          return null;
+        }
+      },
+      invite: async (id, uid) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/team/${id}?uid=${uid}`;
+          const res = await fetch(url, { method: "POST", headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          return null;
+        }
+      },
+      delete: async (id, inviteId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/team/${id}/invite/${inviteId}`;
+          const res = await fetch(url, { method: "DELETE", headers });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          return false;
+        }
+      }
+    },
     shots: {
       last: async (id, exclude) => {
         try {

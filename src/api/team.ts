@@ -1,5 +1,5 @@
 import { api_host } from "@/const/host"
-import { DocTeam, Team, TeamScratch } from "@/types/team"
+import { DocTeam, DocTeamInvite, Team, TeamInvite, TeamScratch } from "@/types/team"
 import { ChunkResponse, CommentBlock, DocDraftShotData, DocShotData, DraftForUpload, DraftShotData, ShotData, authorizationHeader } from ".."
 
 export const team = {
@@ -108,6 +108,60 @@ export const team = {
       } catch(e) {
           return null
       }
+  },
+  invite: {
+    all: async(id: string): Promise<DocTeamInvite[]> => {
+      try {
+          const headers = new Headers()
+          const authHeader = authorizationHeader()
+          headers.append('authorization', authHeader || '')
+          const url = `${api_host}/team/${id}/invites`
+          const res = await fetch(url, { method: "GET", headers: headers })
+          if (res.ok) return await res.json() as DocTeamInvite[]
+          return []
+      } catch(e) {
+          return []
+      }
+    },
+    get: async(id: string, inviteId: string): Promise<DocTeamInvite | null> => {
+      try {
+          const headers = new Headers()
+          const authHeader = authorizationHeader()
+          headers.append('authorization', authHeader || '')
+          const url = `${api_host}/team/${id}/invite/${inviteId}`
+          const res = await fetch(url, { method: "GET", headers: headers })
+          if (res.ok) return await res.json() as DocTeamInvite
+          return null
+      } catch(e) {
+          return null
+      }
+    },
+    invite: async(id: string, uid: string) => {
+      try {
+          const headers = new Headers()
+          const authHeader = authorizationHeader()
+          headers.append('authorization', authHeader || '')
+          const url = `${api_host}/team/${id}?uid=${uid}`
+          const res = await fetch(url, { method: "POST", headers: headers })
+          if (res.ok) return await res.json() as DocTeamInvite
+          return null
+      } catch(e) {
+          return null
+      }
+    },
+    delete: async(id: string, inviteId: string) => {
+      try {
+          const headers = new Headers()
+          const authHeader = authorizationHeader()
+          headers.append('authorization', authHeader || '')
+          const url = `${api_host}/team/${id}/invite/${inviteId}`
+          const res = await fetch(url, { method: "DELETE", headers: headers })
+          if (res.ok) return Boolean(await res.text())
+          return false
+      } catch(e) {
+          return false
+      }
+    }
   },
   shots: {
       last: async(id: string, exclude?: string): Promise<DocShotData[]> => {
