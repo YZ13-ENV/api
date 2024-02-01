@@ -20,4 +20,11 @@ export type TeamScratch = {
     founder: string;
     members: string[];
 };
+export type TeamInvite = {
+    uid: string;
+    teamId: string;
+    createAt: string;
+    expiredAt?: number;
+};
+export type DocTeamInvite = DocData<TeamInvite>;
 export type DocTeam = DocData<Team>;
