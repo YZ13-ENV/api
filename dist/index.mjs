@@ -361,14 +361,14 @@ const bum = {
         return null;
       }
     },
-    last: async (uid) => {
+    last: async (uid, exclude) => {
       try {
         if (!uid)
           throw new Error("uid is not provided");
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const url = `${api_host}/shots/user/last?id=${uid}`;
+        const url = `${api_host}/shots/user/last?id=${uid}${exclude ? `&exclude=${exclude}` : ""}`;
         const res = await fetch(url, { method: "GET", headers });
         if (res.ok)
           return await res.json();
@@ -1150,6 +1150,22 @@ const team = {
     }
   },
   shots: {
+    last: async (id, exclude) => {
+      try {
+        if (!id)
+          throw new Error("uid is not provided");
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = `${api_host}/team/${id}/last${exclude ? `?exclude=${exclude}` : ""}`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
+      }
+    },
     all: async (id, order, category) => {
       try {
         const headers = new Headers();

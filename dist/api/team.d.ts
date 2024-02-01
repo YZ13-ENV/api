@@ -9,6 +9,7 @@ export declare const team: {
     followings: (id: string) => Promise<string[]>;
     mostPopularShot: (id: string) => Promise<DocShotData | null>;
     shots: {
+        last: (id: string, exclude?: string) => Promise<DocShotData[]>;
         all: (id: string, order?: string, category?: string) => Promise<ChunkResponse<DocShotData[]>>;
     };
     drafts: {

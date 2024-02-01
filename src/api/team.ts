@@ -110,6 +110,20 @@ export const team = {
       }
   },
   shots: {
+      last: async(id: string, exclude?: string): Promise<DocShotData[]> => {
+          try {
+              if (!id) throw new Error('uid is not provided')
+              const headers = new Headers()
+              const authHeader = authorizationHeader()
+              headers.append('authorization', authHeader || '')
+              const url = `${api_host}/team/${id}/last${exclude ? `?exclude=${exclude}` : ""}`
+              const res = await fetch(url, { method: 'GET', headers: headers })
+              if (res.ok) return await res.json() as DocShotData[]
+              return []
+          } catch(e) {
+              return []
+          }
+      },
       all: async(id: string, order?: string, category?: string): Promise<ChunkResponse<DocShotData[]>> => {
           try {
               const headers = new Headers()

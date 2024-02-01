@@ -37,13 +37,13 @@ export const bum = {
                     return null
                 }
             },
-            last: async(uid: string): Promise<DocShotData[]> => {
+            last: async(uid: string, exclude?: string): Promise<DocShotData[]> => {
                 try {
                     if (!uid) throw new Error('uid is not provided')
                     const headers = new Headers()
                     const authHeader = authorizationHeader()
                     headers.append('authorization', authHeader || '')
-                    const url = `${api_host}/shots/user/last?id=${uid}`
+                    const url = `${api_host}/shots/user/last?id=${uid}${exclude ? `&exclude=${exclude}` : ""}`
                     const res = await fetch(url, { method: 'GET', headers: headers })
                     if (res.ok) return await res.json() as DocShotData[]
                     return []

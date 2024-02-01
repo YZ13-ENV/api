@@ -4,7 +4,7 @@ export declare const bum: {
     author: {
         saved: (uid: string) => Promise<DocShotData[]>;
         mostPopularShot: (uid: string) => Promise<DocShotData | null>;
-        last: (uid: string) => Promise<DocShotData[]>;
+        last: (uid: string, exclude?: string) => Promise<DocShotData[]>;
         follow: (from: string, to: string) => Promise<string[]>;
         addAbout: (id: string, about: string) => Promise<string>;
         getAbout: (id: string) => Promise<string>;
