@@ -10,6 +10,7 @@ export declare const team: {
     mostPopularShot: (id: string) => Promise<DocShotData | null>;
     invite: {
         all: (id: string) => Promise<DocTeamInvite[]>;
+        accept: (id: string, inviteId: string) => Promise<boolean>;
         get: (id: string, inviteId: string) => Promise<DocTeamInvite | null>;
         invite: (id: string, uid: string) => Promise<DocTeamInvite | null>;
         delete: (id: string, inviteId: string) => Promise<boolean>;

@@ -1166,6 +1166,20 @@
           return [];
         }
       },
+      accept: async (id, inviteId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/team/${id}/invite/${inviteId}/accept`;
+          const res = await fetch(url, { method: "POST", headers });
+          if (res.ok)
+            return Boolean(res.text());
+          return false;
+        } catch (e) {
+          return false;
+        }
+      },
       get: async (id, inviteId) => {
         try {
           const headers = new Headers();
