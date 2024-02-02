@@ -1185,7 +1185,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}?uid=${uid}`;
+          const url = `${api_host}/team/${id}/invite?uid=${uid}`;
           const res = await fetch(url, { method: "POST", headers });
           if (res.ok)
             return await res.json();
