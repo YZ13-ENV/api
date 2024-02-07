@@ -1,4 +1,5 @@
 import { DocData } from "./common";
+import { Attachment } from "./shot";
 export type Team = {
     name: string;
     signature: string;
@@ -9,6 +10,7 @@ export type Team = {
     photoURL?: string;
     updatedAt?: number;
     follows?: string[];
+    statuses?: string[];
     links?: {
         web?: string;
     };
@@ -25,6 +27,20 @@ export type TeamInvite = {
     teamId: string;
     createAt: number;
     expiredAt?: number;
+};
+export type TeamTask = {
+    status: string;
+    checked: boolean;
+    priority: string;
+    performers: string[];
+    name: string;
+    description: string;
+    deadline?: number;
+    createAt: number;
+    updatedAt?: number;
+    comments?: object[];
+    subtasks: object[];
+    attachments: Attachment[];
 };
 export type DocTeamInvite = DocData<TeamInvite>;
 export type DocTeam = DocData<Team>;

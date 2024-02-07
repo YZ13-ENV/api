@@ -5,6 +5,7 @@ export type ShortUserData = {
     displayName: string;
     email: string;
     isSubscriber: boolean;
+    subscription_expired_at?: number;
     metadata: UserMetadata;
     position?: string;
     nickname?: string;
