@@ -28,19 +28,36 @@ export type TeamInvite = {
     createAt: number;
     expiredAt?: number;
 };
+export type TeamTaskScratch = {
+    status: string;
+    checked: boolean;
+    performers: string[];
+    name: string;
+    createAt: number;
+    authorId: string;
+};
 export type TeamTask = {
     status: string;
     checked: boolean;
-    priority: string;
     performers: string[];
     name: string;
-    description: string;
-    deadline?: number;
     createAt: number;
+    authorId: string;
+    description?: string;
+    priority?: string;
+    deadline?: number;
     updatedAt?: number;
     comments?: object[];
-    subtasks: object[];
+    subtasks?: object[];
     attachments: Attachment[];
 };
+export type TeamTasksConfig = {
+    createdAt: number;
+    updatedAt?: number;
+    teamId: string;
+    statuses: string[];
+};
+export type DocTeamTaskConfig = DocData<TeamTasksConfig>;
+export type DocTeamTask = DocData<TeamTask>;
 export type DocTeamInvite = DocData<TeamInvite>;
 export type DocTeam = DocData<Team>;

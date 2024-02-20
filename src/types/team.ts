@@ -1,11 +1,10 @@
 import { DocData } from "./common";
 import { Attachment } from "./shot";
-
 export type Team = {
   name: string;
   signature: string;
   founder: string;
-  members: string[]; // userId[]
+  members: string[];
   createdAt: number;
   about?: string;
   photoURL?: string;
@@ -16,37 +15,50 @@ export type Team = {
     web?: string;
   };
 };
-
 export type TeamScratch = {
   name: string;
   bio: string;
   photoURL?: string;
   founder: string;
-  members: string[]; // userId[]
+  members: string[];
 };
-
 export type TeamInvite = {
-  uid: string; // Это даст доступ конкретному пользователю на страницу приглашения
-  teamId: string; // Это поможет создать ссылку на документ
+  uid: string;
+  teamId: string;
   createAt: number;
   expiredAt?: number;
 };
-
+export type TeamTaskScratch = {
+  status: string;
+  checked: boolean;
+  performers: string[];
+  name: string;
+  createAt: number;
+  authorId: string;
+};
 export type TeamTask = {
   status: string;
   checked: boolean;
-  priority: string;
-  performers: string[]; // only can be a team member or team founder
+  performers: string[];
   name: string;
-  description: string;
-  deadline?: number;
   createAt: number;
+  authorId: string;
+  description?: string;
+  priority?: string;
+  deadline?: number;
   updatedAt?: number;
-  comments?: object[]; // { author: string, text: string, createdAt: number updatedAt?:number }
-  subtasks: object[]; // { checked: boolean, name: string, performersa?: string }
+  comments?: object[];
+  subtasks?: object[];
   attachments: Attachment[];
 };
+export type TeamTasksConfig = {
+  createdAt: number;
+  updatedAt?: number;
+  teamId: string;
+  statuses: string[];
+};
 
+export type DocTeamTaskConfig = DocData<TeamTasksConfig>;
+export type DocTeamTask = DocData<TeamTask>;
 export type DocTeamInvite = DocData<TeamInvite>;
 export type DocTeam = DocData<Team>;
-
