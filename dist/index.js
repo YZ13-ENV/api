@@ -1036,13 +1036,14 @@
       }
     }
   };
+  const api_prefix = `${api_host}/team`;
   const team = {
     get: async (id) => {
       try {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const url = `${api_host}/team/${id}`;
+        const url = `${api_prefix}/${id}`;
         const res = await fetch(url, { method: "GET", headers });
         if (res.ok) {
           return await res.json();
@@ -1058,8 +1059,12 @@
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
-        const url = `${api_host}/team/${id}`;
-        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(team2) });
+        const url = `${api_prefix}/${id}`;
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(team2)
+        });
         if (res.ok) {
           return await res.json();
         } else
@@ -1074,8 +1079,12 @@
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
-        const url = `${api_host}/team/${id}`;
-        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(team2) });
+        const url = `${api_prefix}/${id}`;
+        const res = await fetch(url, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify(team2)
+        });
         if (res.ok) {
           return await res.json();
         } else
@@ -1089,7 +1098,7 @@
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const url = `${api_host}/team/${id}`;
+        const url = `${api_prefix}/${id}`;
         const res = await fetch(url, { method: "DELETE", headers });
         if (res.ok) {
           return Boolean(await res.text());
@@ -1104,7 +1113,7 @@
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const res = await fetch(`${api_host}/team/${id}/likes`, {
+        const res = await fetch(`${api_prefix}/${id}/likes`, {
           method: "GET",
           headers
         });
@@ -1122,7 +1131,7 @@
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const res = await fetch(`${api_host}/team/${id}/following`, {
+        const res = await fetch(`${api_prefix}/${id}/following`, {
           method: "GET",
           headers
         });
@@ -1142,7 +1151,7 @@
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const url = `${api_host}/team/${id}/popular`;
+        const url = `${api_prefix}/${id}/popular`;
         const res = await fetch(url, { method: "GET", headers });
         if (res.ok)
           return await res.json();
@@ -1151,13 +1160,142 @@
         return null;
       }
     },
+    task: {
+      config: {
+        get: async (id) => {
+          try {
+            const headers = new Headers();
+            const authHeader = authorizationHeader();
+            headers.append("authorization", authHeader || "");
+            const url = `${api_prefix}/${id}/tasks/config`;
+            const res = await fetch(url, { method: "GET", headers });
+            if (res.ok)
+              return await res.json();
+            return null;
+          } catch (e) {
+            return null;
+          }
+        },
+        update: async (id, cfg) => {
+          try {
+            const headers = new Headers();
+            const authHeader = authorizationHeader();
+            headers.append("authorization", authHeader || "");
+            headers.append("Content-Type", "application/json");
+            const url = `${api_prefix}/${id}/tasks/config`;
+            const res = await fetch(url, {
+              method: "PATCH",
+              headers,
+              body: JSON.stringify(cfg)
+            });
+            if (res.ok)
+              return await res.json();
+            return null;
+          } catch (e) {
+            return null;
+          }
+        },
+        delete: async (id) => {
+          try {
+            const headers = new Headers();
+            const authHeader = authorizationHeader();
+            headers.append("authorization", authHeader || "");
+            const url = `${api_prefix}/${id}/tasks/config`;
+            const res = await fetch(url, { method: "DELETE", headers });
+            if (res.ok)
+              return Boolean(await res.text());
+            return false;
+          } catch (e) {
+            return false;
+          }
+        }
+      },
+      all: async (id) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_prefix}/${id}/tasks/all`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          return null;
+        }
+      },
+      get: async (id, taskId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_prefix}/${id}/tasks/${taskId}`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          return null;
+        }
+      },
+      create: async (id, scratch) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_prefix}/${id}/tasks`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(scratch)
+          });
+          if (res.ok)
+            return await res.json();
+        } catch (e) {
+          return null;
+        }
+      },
+      update: async (id, taskId, scratch) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_prefix}/${id}/tasks/${taskId}`;
+          const res = await fetch(url, {
+            method: "PATCH",
+            headers,
+            body: JSON.stringify(scratch)
+          });
+          if (res.ok)
+            return await res.json();
+        } catch (e) {
+          return null;
+        }
+      },
+      delete: async (id, taskId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_prefix}/${id}/tasks/${taskId}`;
+          const res = await fetch(url, { method: "DELETE", headers });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          return false;
+        }
+      }
+    },
     invite: {
       all: async (id) => {
         try {
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/invites`;
+          const url = `${api_prefix}/${id}/invites`;
           const res = await fetch(url, { method: "GET", headers });
           if (res.ok)
             return await res.json();
@@ -1171,7 +1309,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/invite/${inviteId}/accept`;
+          const url = `${api_prefix}/${id}/invite/${inviteId}/accept`;
           const res = await fetch(url, { method: "POST", headers });
           if (res.ok)
             return Boolean(res.text());
@@ -1185,7 +1323,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/invite/${inviteId}`;
+          const url = `${api_prefix}/${id}/invite/${inviteId}`;
           const res = await fetch(url, { method: "GET", headers });
           if (res.ok)
             return await res.json();
@@ -1199,7 +1337,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/invite?uid=${uid}`;
+          const url = `${api_prefix}/${id}/invite?uid=${uid}`;
           const res = await fetch(url, { method: "POST", headers });
           if (res.ok)
             return await res.json();
@@ -1213,7 +1351,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/invite/${inviteId}`;
+          const url = `${api_prefix}/${id}/invite/${inviteId}`;
           const res = await fetch(url, { method: "DELETE", headers });
           if (res.ok)
             return Boolean(await res.text());
@@ -1231,7 +1369,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/last${exclude ? `?exclude=${exclude}` : ""}`;
+          const url = `${api_prefix}/${id}/last${exclude ? `?exclude=${exclude}` : ""}`;
           const res = await fetch(url, { method: "GET", headers });
           if (res.ok)
             return await res.json();
@@ -1245,7 +1383,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = order && category ? `${api_host}/team/${id}/shots/${order}/${category}` : order ? `${api_host}/team/${id}/shots/${order}` : `${api_host}/team/${id}/shots`;
+          const url = order && category ? `${api_prefix}/${id}/shots/${order}/${category}` : order ? `${api_prefix}/${id}/shots/${order}` : `${api_prefix}/${id}/shots`;
           const res = await fetch(url, { method: "GET", headers });
           if (res.ok)
             return await res.json();
@@ -1262,7 +1400,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = order && category ? `${api_host}/team/${id}/shots/${order}/${category}?onlyDrafts=true` : order ? `${api_host}/team/${id}/shots/${order}?onlyDrafts=true` : `${api_host}/team/${id}/shots?onlyDrafts=true`;
+          const url = order && category ? `${api_prefix}/${id}/shots/${order}/${category}?onlyDrafts=true` : order ? `${api_prefix}/${id}/shots/${order}?onlyDrafts=true` : `${api_prefix}/${id}/shots?onlyDrafts=true`;
           const res = await fetch(url, { method: "GET", headers });
           if (res.ok)
             return await res.json();
@@ -1279,7 +1417,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/draft/${draftId}`;
+          const url = `${api_prefix}/${id}/draft/${draftId}`;
           const res = await fetch(url, { method: "GET", headers });
           if (res.ok) {
             return await res.json();
@@ -1295,8 +1433,12 @@
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
           headers.append("Content-Type", "application/json");
-          const url = `${api_host}/team/${id}/draft/${draftId}`;
-          const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+          const url = `${api_prefix}/${id}/draft/${draftId}`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(draft)
+          });
           if (res.ok) {
             return Boolean(res.text());
           } else
@@ -1311,8 +1453,12 @@
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
           headers.append("Content-Type", "application/json");
-          const url = `${api_host}/team/${id}/draft/${draftId}`;
-          const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(draft) });
+          const url = `${api_prefix}/${id}/draft/${draftId}`;
+          const res = await fetch(url, {
+            method: "PATCH",
+            headers,
+            body: JSON.stringify(draft)
+          });
           if (res.ok) {
             return await res.json();
           } else
@@ -1326,7 +1472,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/draft/${draftId}`;
+          const url = `${api_prefix}/${id}/draft/${draftId}`;
           const res = await fetch(url, { method: "DELETE", headers });
           if (res.ok) {
             return Boolean(res.text());
@@ -1345,7 +1491,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/shot/${shotId}/like?uid=${uid}`;
+          const url = `${api_prefix}/${id}/shot/${shotId}/like?uid=${uid}`;
           const res = await fetch(url, { method: "POST", headers });
           if (res.ok)
             return await res.json();
@@ -1361,7 +1507,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/shot/${shotId}/view?uid=${uid}`;
+          const url = `${api_prefix}/${id}/shot/${shotId}/view?uid=${uid}`;
           const res = await fetch(url, { method: "POST", headers });
           if (res.ok)
             return await res.json();
@@ -1376,8 +1522,12 @@
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
           headers.append("Content-Type", "application/json");
-          const url = `${api_host}/team/${id}/shot/${shotId}/comment`;
-          const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(comment) });
+          const url = `${api_prefix}/${id}/shot/${shotId}/comment`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(comment)
+          });
           if (res.ok)
             return await res.json();
           return [];
@@ -1390,7 +1540,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/shot/${shotId}/comment?commentId=${commentId}`;
+          const url = `${api_prefix}/${id}/shot/${shotId}/comment?commentId=${commentId}`;
           const res = await fetch(url, { method: "DELETE", headers });
           if (res.ok)
             return Boolean(await res.text());
@@ -1404,7 +1554,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/shot/${shotId}`;
+          const url = `${api_prefix}/${id}/shot/${shotId}`;
           const res = await fetch(url, { method: "", headers });
           if (res.ok) {
             return await res.json();
@@ -1420,8 +1570,12 @@
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
           headers.append("Content-Type", "application/json");
-          const url = `${api_host}/team/${id}/shot/${shotId}`;
-          const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+          const url = `${api_prefix}/${id}/shot/${shotId}`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(draft)
+          });
           if (res.ok) {
             return Boolean(await res.text());
           } else
@@ -1436,8 +1590,12 @@
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
           headers.append("Content-Type", "application/json");
-          const url = `${api_host}/team/${id}/shot/${shotId}`;
-          const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(shot) });
+          const url = `${api_prefix}/${id}/shot/${shotId}`;
+          const res = await fetch(url, {
+            method: "PATCH",
+            headers,
+            body: JSON.stringify(shot)
+          });
           if (res.ok) {
             return Boolean(await res.text());
           } else
@@ -1451,7 +1609,7 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/team/${id}/shot/${shotId}`;
+          const url = `${api_prefix}/${id}/shot/${shotId}`;
           const res = await fetch(url, { method: "DELETE", headers });
           if (res.ok) {
             return Boolean(await res.text());
