@@ -15,6 +15,10 @@ export type Team = {
         web?: string;
     };
 };
+export type SubTask = {
+    checked: boolean;
+    text: string;
+};
 export type TeamScratch = {
     name: string;
     bio: string;
@@ -48,7 +52,7 @@ export type TeamTask = {
     deadline?: number;
     updatedAt?: number;
     comments?: object[];
-    subtasks?: object[];
+    subtasks?: SubTask[];
     attachments: Attachment[];
 };
 export type TeamTasksConfig = {
