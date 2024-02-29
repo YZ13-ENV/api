@@ -9,7 +9,7 @@ export type Message = {
     deliveredAt?: number;
     from?: {
         chatId: string;
-        messagesId: [];
+        messagesId: string[];
     };
     answer?: {
         chatId: string;
@@ -24,7 +24,7 @@ export type MessageScratch = {
     createdAt: number;
     from?: {
         chatId: string;
-        messagesId: [];
+        messagesId: string[];
     };
     answer?: {
         chatId: string;
