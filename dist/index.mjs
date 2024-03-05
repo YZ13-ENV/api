@@ -382,10 +382,13 @@ const bum = {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const res = await fetch(`${api_host}/shots/user/follow?from=${from}&to=${to}`, {
-          method: "GET",
-          headers
-        });
+        const res = await fetch(
+          `${api_host}/shots/user/follow?from=${from}&to=${to}`,
+          {
+            method: "GET",
+            headers
+          }
+        );
         if (res.ok) {
           return await res.json();
         } else
@@ -400,10 +403,13 @@ const bum = {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const res = await fetch(`${api_host}/shots/user/about?id=${id}&about=${about}`, {
-          method: "POST",
-          headers
-        });
+        const res = await fetch(
+          `${api_host}/shots/user/about?id=${id}&about=${about}`,
+          {
+            method: "POST",
+            headers
+          }
+        );
         if (res.ok) {
           return await res.text();
         } else
@@ -436,10 +442,13 @@ const bum = {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const res = await fetch(`${api_host}/shots/user/signature?id=${id}&signature=${signature}`, {
-          method: "POST",
-          headers
-        });
+        const res = await fetch(
+          `${api_host}/shots/user/signature?id=${id}&signature=${signature}`,
+          {
+            method: "POST",
+            headers
+          }
+        );
         if (res.ok) {
           return await res.text();
         } else
@@ -531,7 +540,11 @@ const bum = {
         headers.append("authorization", authHeader || "");
         const url = `${api_host}/shots/attachments?id=${path}${asThumbnail ? `&asThumbnail=${asThumbnail}` : ""}`;
         form.append("file", file2);
-        const res = await fetch(url, { method: "POST", headers, body: form });
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body: form
+        });
         if (res.ok) {
           const attachment = await res.json();
           return attachment;
@@ -580,7 +593,7 @@ const bum = {
   shots: {
     search: async (query, order, category, uid) => {
       try {
-        if (!uid)
+        if (order === "following" && !uid)
           throw Error("uid is not provided");
         const headers = new Headers();
         const authHeader = authorizationHeader();
@@ -667,9 +680,12 @@ const bum = {
         const headers = new Headers();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const shotsRes = await fetch(`${api_host}/shots/${requestType}/${userId}${order ? `?order=${order}` : ""}`, {
-          headers
-        });
+        const shotsRes = await fetch(
+          `${api_host}/shots/${requestType}/${userId}${order ? `?order=${order}` : ""}`,
+          {
+            headers
+          }
+        );
         const shots = await shotsRes.json();
         return shots;
       } catch (e) {
@@ -718,7 +734,11 @@ const bum = {
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
         const url = `${api_host}/shots/shot/${id}/comment`;
-        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(comment) });
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(comment)
+        });
         if (res.ok)
           return await res.json();
         return [];
@@ -743,11 +763,17 @@ const bum = {
     get: async (shotId, userId) => {
       try {
         if (userId) {
-          const shotRes = await fetch(`${api_host}/shots/shot/${shotId}/${userId}`, { method: "GET", cache: "no-store" });
+          const shotRes = await fetch(
+            `${api_host}/shots/shot/${shotId}/${userId}`,
+            { method: "GET", cache: "no-store" }
+          );
           const shot = await shotRes.json();
           return shot;
         } else {
-          const shotRes = await fetch(`${api_host}/shots/shot/${shotId}`, { method: "GET", cache: "no-store" });
+          const shotRes = await fetch(`${api_host}/shots/shot/${shotId}`, {
+            method: "GET",
+            cache: "no-store"
+          });
           const shot = await shotRes.json();
           return shot;
         }
@@ -763,7 +789,11 @@ const bum = {
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
         const url = `${api_host}/shots/shot/${id}`;
-        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(draft)
+        });
         if (res.ok)
           return Boolean(await res.text());
         return false;
@@ -779,7 +809,11 @@ const bum = {
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
         const url = `${api_host}/shots/shot/${id}`;
-        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(draft) });
+        const res = await fetch(url, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify(draft)
+        });
         if (res.ok)
           return Boolean(await res.text());
         return false;
@@ -818,7 +852,10 @@ const bum = {
   draft: {
     get: async (shotId) => {
       try {
-        const res = await fetch(`${api_host}/shots/draft/${shotId}`, { method: "GET", cache: "no-store" });
+        const res = await fetch(`${api_host}/shots/draft/${shotId}`, {
+          method: "GET",
+          cache: "no-store"
+        });
         const draft = await res.json();
         return draft;
       } catch (e) {
@@ -833,7 +870,11 @@ const bum = {
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
         const url = `${api_host}/shots/draft/${id}`;
-        const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(draft) });
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(draft)
+        });
         if (res.ok)
           return Boolean(await res.text());
         return false;
@@ -849,7 +890,11 @@ const bum = {
         headers.append("authorization", authHeader || "");
         headers.append("Content-Type", "application/json");
         const url = `${api_host}/shots/draft/${id}`;
-        const res = await fetch(url, { method: "PATCH", headers, body: JSON.stringify(draft) });
+        const res = await fetch(url, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify(draft)
+        });
         if (res.ok)
           return await res.json();
         return null;

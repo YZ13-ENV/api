@@ -10,7 +10,7 @@ export declare const bum: {
         getAbout: (id: string) => Promise<string>;
         addSignature: (id: string, signature: string) => Promise<string>;
         getSignature: (id: string) => Promise<string>;
-        likes: (id: string) => Promise<Array<ShotData['likes']>>;
+        likes: (id: string) => Promise<Array<ShotData["likes"]>>;
         followers: (id: string) => Promise<string[]>;
         followings: (id: string) => Promise<string[]>;
     };
@@ -27,11 +27,11 @@ export declare const bum: {
         tags: () => Promise<ChunkResponse<string[]>>;
         all: (order: string, category?: string, uid?: string) => Promise<ChunkResponse<DocShotData[]>>;
         byTag: (tag: string, order: string) => Promise<DocShotData[]>;
-        byType: (userId: string, type?: 'draft' | 'shots', order?: 'popular' | 'new') => Promise<DocShotData[]>;
+        byType: (userId: string, type?: "draft" | "shots", order?: "popular" | "new") => Promise<DocShotData[]>;
     };
     shot: {
-        like: (id: string, uid: string) => Promise<DocShotData['likes']>;
-        view: (id: string, uid: string) => Promise<DocShotData['views']>;
+        like: (id: string, uid: string) => Promise<DocShotData["likes"]>;
+        view: (id: string, uid: string) => Promise<DocShotData["views"]>;
         addComment: (id: string, comment: CommentBlock) => Promise<CommentBlock[]>;
         deleteComment: (id: string, commentId: string) => Promise<boolean>;
         get: (shotId: string, userId?: string) => Promise<DocShotData | null>;
