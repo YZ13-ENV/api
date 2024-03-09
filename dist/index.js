@@ -158,177 +158,6 @@
       }
     }
   };
-  const file = {
-    static: {
-      get: async (path) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          const stablePath = path.startsWith("/") ? path : `/${path}`;
-          const url = `${api_host}${stablePath}`;
-          const res = await fetch(url, { headers });
-          if (res.ok) {
-            const body = res.body ? res.body.getReader() : null;
-            if (body) {
-              const file2 = await body.read();
-              const content_type = res.headers.get("content-type");
-              if (file2.value && content_type) {
-                const base64String = btoa(String.fromCharCode(...new Uint8Array(file2.value)));
-                if (!base64String)
-                  throw new Error("Error");
-                const result = `data:${content_type};base64,${base64String}`;
-                return result;
-              } else
-                throw new Error("Error");
-            } else
-              throw new Error("Error");
-          }
-          return null;
-        } catch (e) {
-          console.log(e);
-          return null;
-        }
-      }
-    },
-    upload: {
-      file: async (link, file2) => {
-        const form = new FormData();
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          form.append("file", file2);
-          const uploadedRes = await fetch(`${api_host}/files/file?link=${link}`, {
-            method: "POST",
-            headers,
-            body: form
-          });
-          if (uploadedRes.ok) {
-            const uploadedFile = await uploadedRes.text();
-            return uploadedFile;
-          }
-          return null;
-        } catch (e) {
-          console.log(e);
-          return null;
-        }
-      },
-      delete: async (url) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          await fetch(`${api_host}/files/file?link=${url}`, { method: "DELETE", headers });
-          return true;
-        } catch (e) {
-          return false;
-        }
-      }
-    }
-  };
-  const user = {
-    byId: {
-      short: async (userId) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          const userRes = await fetch(`${api_host}/users/uid/${userId}`, { method: "GET", cache: "no-store", headers });
-          const user2 = await userRes.json();
-          return user2;
-        } catch (e) {
-          console.log(e);
-          return null;
-        }
-      },
-      updateProfile: async (uid, data) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          headers.append("Content-Type", "application/json");
-          const url = `${api_host}/users/uid/${uid}`;
-          const res = await fetch(url, {
-            method: "POST",
-            headers,
-            body: JSON.stringify(data)
-          });
-          if (res.ok)
-            return Boolean(await res.json());
-          return false;
-        } catch (e) {
-          return false;
-        }
-      },
-      update: async (uid, field) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          headers.append("Content-Type", "application/json");
-          const url = `${api_host}/users/claim/${uid}`;
-          const res = await fetch(url, {
-            method: "POST",
-            headers,
-            body: JSON.stringify(field)
-          });
-          if (res.ok)
-            return await res.json();
-          return null;
-        } catch (e) {
-          return null;
-        }
-      }
-    },
-    byNick: {
-      short: async (nick, check) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          const res = await fetch(`${api_host}/users/nickname/${nick}${check ? "?check=true" : ""}`, { method: "GET", cache: "no-store", headers });
-          if (check)
-            return Boolean(await res.text());
-          const user2 = await res.json();
-          return user2;
-        } catch (e) {
-          console.log(e);
-          return null;
-        }
-      },
-      create: async (nick, uid) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          const url = `${api_host}/users/nickname/${nick}?uid=${uid}`;
-          const res = await fetch(url, { method: "POST", headers });
-          if (res.ok)
-            return await res.json();
-          return null;
-        } catch (e) {
-          console.log(e);
-          return null;
-        }
-      },
-      delete: async (nick) => {
-        try {
-          const headers = new Headers();
-          const authHeader = authorizationHeader();
-          headers.append("authorization", authHeader || "");
-          const url = `${api_host}/users/nickname/${nick}`;
-          const res = await fetch(url, { method: "Delete", headers });
-          if (res.ok)
-            return Boolean(await res.text());
-          return false;
-        } catch (e) {
-          console.log(e);
-          return false;
-        }
-      }
-    }
-  };
   const bum = {
     author: {
       saved: async (uid) => {
@@ -922,6 +751,92 @@
       }
     }
   };
+  const prefix$1 = `${api_host}/default`;
+  const default_api = {
+    all: async () => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url = prefix$1 + "/projects";
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
+      }
+    }
+  };
+  const file = {
+    static: {
+      get: async (path) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const stablePath = path.startsWith("/") ? path : `/${path}`;
+          const url = `${api_host}${stablePath}`;
+          const res = await fetch(url, { headers });
+          if (res.ok) {
+            const body = res.body ? res.body.getReader() : null;
+            if (body) {
+              const file2 = await body.read();
+              const content_type = res.headers.get("content-type");
+              if (file2.value && content_type) {
+                const base64String = btoa(String.fromCharCode(...new Uint8Array(file2.value)));
+                if (!base64String)
+                  throw new Error("Error");
+                const result = `data:${content_type};base64,${base64String}`;
+                return result;
+              } else
+                throw new Error("Error");
+            } else
+              throw new Error("Error");
+          }
+          return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      }
+    },
+    upload: {
+      file: async (link, file2) => {
+        const form = new FormData();
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          form.append("file", file2);
+          const uploadedRes = await fetch(`${api_host}/files/file?link=${link}`, {
+            method: "POST",
+            headers,
+            body: form
+          });
+          if (uploadedRes.ok) {
+            const uploadedFile = await uploadedRes.text();
+            return uploadedFile;
+          }
+          return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      delete: async (url) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          await fetch(`${api_host}/files/file?link=${url}`, { method: "DELETE", headers });
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+    }
+  };
   const notes = (() => {
     return {
       getNoteById: async (noteId) => {
@@ -1078,6 +993,111 @@
         return [];
       } catch (e) {
         return [];
+      }
+    }
+  };
+  const prefix = `${api_host}/speed-insights`;
+  const speed_insights = {
+    getAll: async (appId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader() || "";
+        headers.append("authorization", authHeader);
+        const url = `${prefix}/metric/all?appId=${appId}`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
+      }
+    },
+    getRange: async (appId, start, end) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader() || "";
+        headers.append("authorization", authHeader);
+        const url = `${prefix}/metric/range?appId=${appId}&start=${start}&end=${end}`;
+        const res = await fetch(url, { method: "GET", headers });
+        if (res.ok)
+          return await res.json();
+        return [];
+      } catch (e) {
+        return [];
+      }
+    },
+    upload: async (appId, metric) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader() || "";
+        headers.append("authorization", authHeader);
+        headers.append("Content-Type", "application/json");
+        const url = `${prefix}/metric?appId=${appId}`;
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(metric)
+        });
+        if (res.ok)
+          return await res.json();
+        return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    uploadBatch: async (appId, metrics) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader() || "";
+        headers.append("authorization", authHeader);
+        headers.append("Content-Type", "application/json");
+        const url = `${prefix}/metric/batch?appId=${appId}`;
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(metrics)
+        });
+        if (res.ok)
+          return await res.json();
+        return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    delete: async (appId, metricId) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader() || "";
+        headers.append("authorization", authHeader);
+        const url = `${prefix}/metric/${appId}/${metricId}`;
+        const res = await fetch(url, {
+          method: "DELETE",
+          headers
+        });
+        if (res.ok)
+          return await res.json();
+        return null;
+      } catch (e) {
+        return null;
+      }
+    },
+    deleteBatch: async (appId, metrics) => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader() || "";
+        headers.append("authorization", authHeader);
+        headers.append("Content-Type", "application/json");
+        const url = `${prefix}/metric/batch?appId=${appId}`;
+        const res = await fetch(url, {
+          method: "DELETE",
+          headers,
+          body: JSON.stringify(metrics)
+        });
+        if (res.ok)
+          return await res.json();
+        return null;
+      } catch (e) {
+        return null;
       }
     }
   };
@@ -1666,6 +1686,108 @@
       }
     }
   };
+  const user = {
+    byId: {
+      short: async (userId) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const userRes = await fetch(`${api_host}/users/uid/${userId}`, { method: "GET", cache: "no-store", headers });
+          const user2 = await userRes.json();
+          return user2;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      updateProfile: async (uid, data) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_host}/users/uid/${uid}`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(data)
+          });
+          if (res.ok)
+            return Boolean(await res.json());
+          return false;
+        } catch (e) {
+          return false;
+        }
+      },
+      update: async (uid, field) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          headers.append("Content-Type", "application/json");
+          const url = `${api_host}/users/claim/${uid}`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(field)
+          });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          return null;
+        }
+      }
+    },
+    byNick: {
+      short: async (nick, check) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const res = await fetch(`${api_host}/users/nickname/${nick}${check ? "?check=true" : ""}`, { method: "GET", cache: "no-store", headers });
+          if (check)
+            return Boolean(await res.text());
+          const user2 = await res.json();
+          return user2;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      create: async (nick, uid) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/users/nickname/${nick}?uid=${uid}`;
+          const res = await fetch(url, { method: "POST", headers });
+          if (res.ok)
+            return await res.json();
+          return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      delete: async (nick) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = `${api_host}/users/nickname/${nick}`;
+          const res = await fetch(url, { method: "Delete", headers });
+          if (res.ok)
+            return Boolean(await res.text());
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      }
+    }
+  };
   const cdn = (link) => {
     const isStartWithSlash = link.startsWith("/");
     const fetchUrl = isStartWithSlash ? `https://cdn.darkmaterial.space${link}` : `https://cdn.darkmaterial.space/${link}`;
@@ -1676,9 +1798,11 @@
   exports2.blog = blog;
   exports2.bum = bum;
   exports2.cdn = cdn;
+  exports2.default_api = default_api;
   exports2.file = file;
   exports2.notes = notes;
   exports2.notifications = notifications;
+  exports2.speed_insights = speed_insights;
   exports2.team = team;
   exports2.user = user;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });
