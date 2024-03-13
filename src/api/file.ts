@@ -58,8 +58,8 @@ export const file = {
                 const headers = new Headers()
                 const authHeader = authorizationHeader()
                 headers.append('authorization', authHeader || '')
-                await fetch(`${api_host}/files/file?link=${url}`, { method: "DELETE", headers: headers })
-                return true
+                const res = await fetch(`${api_host}/files/file?link=${url}`, { method: "DELETE", headers: headers })
+                return Boolean(await res.text())
             } catch(e) {
                 return false
             }
