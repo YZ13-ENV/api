@@ -1,6 +1,6 @@
 {
   "name": "@darkmaterial/api",
-  "version": "0.0.9a",
+  "version": "0.0.9a-1",
   "description": "api for dm family",
   "private": true,
   "main": "./dist/index.js",

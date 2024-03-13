@@ -9,7 +9,7 @@ export declare const user: {
         update: (uid: string, field: object) => Promise<ShortUserData | null>;
     };
     byNick: {
-        short: (nick: string, check: boolean) => Promise<boolean | ShortUserData | null>;
+        short: (nick: string, check?: boolean) => Promise<boolean | ShortUserData | null>;
         create: (nick: string, uid: string) => Promise<NicknameReference | null>;
         delete: (nick: string) => Promise<boolean>;
     };

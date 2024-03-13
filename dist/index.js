@@ -1693,7 +1693,11 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const userRes = await fetch(`${api_host}/users/uid/${userId}`, { method: "GET", cache: "no-store", headers });
+          const userRes = await fetch(`${api_host}/users/uid/${userId}`, {
+            method: "GET",
+            cache: "no-store",
+            headers
+          });
           const user2 = await userRes.json();
           return user2;
         } catch (e) {
@@ -1746,13 +1750,18 @@
           const headers = new Headers();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const res = await fetch(`${api_host}/users/nickname/${nick}${check ? "?check=true" : ""}`, { method: "GET", cache: "no-store", headers });
-          if (check)
+          const res = await fetch(
+            `${api_host}/users/nickname/${nick}${check ? "?check=true" : ""}`,
+            { method: "GET", cache: "no-store", headers }
+          );
+          if (check === true)
             return Boolean(await res.text());
           const user2 = await res.json();
           return user2;
         } catch (e) {
           console.log(e);
+          if (check === true)
+            return true;
           return null;
         }
       },
