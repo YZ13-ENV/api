@@ -46,6 +46,7 @@ export type ChatScratch = {
 // По умолчанию все чаты отображаются во вкладке all, и если указан параметр groupName,
 // то чат дублируется в указанной группе
 export type Chat = {
+  type: "chat";
   members: ChatMember[];
   createdAt: number;
   isMuted: boolean;

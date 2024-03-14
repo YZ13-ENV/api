@@ -43,6 +43,7 @@ export type ChatScratch = {
     members: ChatMember[];
 };
 export type Chat = {
+    type: "chat";
     members: ChatMember[];
     createdAt: number;
     isMuted: boolean;
