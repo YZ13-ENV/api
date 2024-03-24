@@ -216,7 +216,7 @@ export const bum = {
         const form = new FormData();
         const authHeader = authorizationHeader();
         headers.append("authorization", authHeader || "");
-        const url = `${api_host}/shots/attachments?id=${path}${asThumbnail ? `&asThumbnail=${asThumbnail}` : ""}`;
+        const url = `${api_host}/shots/attachments?id=${path}${asThumbnail === true ? `&asThumbnail=${asThumbnail}` : ""}`;
         form.append("file", file);
         const res = await fetch(url, {
           method: "POST",

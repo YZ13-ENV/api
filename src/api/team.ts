@@ -5,7 +5,6 @@ import {
   DocTeamTask,
   DocTeamTaskConfig,
   Team,
-  TeamInvite,
   TeamScratch,
   TeamTask,
   TeamTaskScratch,
@@ -388,6 +387,29 @@ export const team = {
             : `${api_prefix}/${id}/shots?onlyDrafts=true`;
         const res = await fetch(url, { method: "GET", headers: headers });
         if (res.ok) return (await res.json()) as ChunkResponse<DocShotData[]>;
+        return { count: 0, data: [], next: "" };
+      } catch (e) {
+        console.warn(e);
+        return { count: 0, data: [], next: "" };
+      }
+    },
+    byTeam: async (
+      id: string,
+      order?: string,
+      category?: string
+    ): Promise<ChunkResponse<DocDraftShotData[]>> => {
+      try {
+        const headers = new Headers();
+        const authHeader = authorizationHeader();
+        headers.append("authorization", authHeader || "");
+        const url =
+          order && category
+            ? `${api_prefix}/${id}/drafts/${order}/${category}`
+            : order
+            ? `${api_prefix}/${id}/drafts/${order}`
+            : `${api_prefix}/${id}/drafts`;
+        const res = await fetch(url, { method: "GET", headers: headers });
+        if (res.ok) return await res.json();
         return { count: 0, data: [], next: "" };
       } catch (e) {
         console.warn(e);

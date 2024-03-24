@@ -369,7 +369,7 @@
           const form = new FormData();
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
-          const url = `${api_host}/shots/attachments?id=${path}${asThumbnail ? `&asThumbnail=${asThumbnail}` : ""}`;
+          const url = `${api_host}/shots/attachments?id=${path}${asThumbnail === true ? `&asThumbnail=${asThumbnail}` : ""}`;
           form.append("file", file2);
           const res = await fetch(url, {
             method: "POST",
@@ -1466,6 +1466,21 @@
           const authHeader = authorizationHeader();
           headers.append("authorization", authHeader || "");
           const url = order && category ? `${api_prefix}/${id}/shots/${order}/${category}?onlyDrafts=true` : order ? `${api_prefix}/${id}/shots/${order}?onlyDrafts=true` : `${api_prefix}/${id}/shots?onlyDrafts=true`;
+          const res = await fetch(url, { method: "GET", headers });
+          if (res.ok)
+            return await res.json();
+          return { count: 0, data: [], next: "" };
+        } catch (e) {
+          console.warn(e);
+          return { count: 0, data: [], next: "" };
+        }
+      },
+      byTeam: async (id, order, category) => {
+        try {
+          const headers = new Headers();
+          const authHeader = authorizationHeader();
+          headers.append("authorization", authHeader || "");
+          const url = order && category ? `${api_prefix}/${id}/drafts/${order}/${category}` : order ? `${api_prefix}/${id}/drafts/${order}` : `${api_prefix}/${id}/drafts`;
           const res = await fetch(url, { method: "GET", headers });
           if (res.ok)
             return await res.json();

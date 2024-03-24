@@ -33,6 +33,7 @@ export declare const team: {
     };
     drafts: {
         all: (id: string, order?: string, category?: string) => Promise<ChunkResponse<DocShotData[]>>;
+        byTeam: (id: string, order?: string, category?: string) => Promise<ChunkResponse<DocDraftShotData[]>>;
     };
     draft: {
         get: (id: string, draftId: string) => Promise<DocDraftShotData | null>;
